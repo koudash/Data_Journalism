@@ -1,1 +1,313 @@
-// @TODO: YOUR CODE HERE!
+// Retrieve data from .csv file and plot the chart
+d3.csv('../static/db/data.csv').then((acsData) => {
+    
+    // .......... Data processing .......... //
+    acsData.forEach((d) => {
+        d.poverty = parseFloat(d.poverty);
+        d.povertyMoe = parseFloat(d.povertyMoe);
+        d.age = parseFloat(d.age);
+        d.ageMoe = parseFloat(d.ageMoe);        
+        d.income = parseFloat(d.income);
+        d.incomeMoe = parseFloat(d.incomeMoe);
+        d.healthcare = parseFloat(d.healthcare);
+        d.healthcareLow = parseFloat(d.healthcareLow);
+        d.healthcareHigh = parseFloat(d.healthcareHigh);
+        d.obesity = parseFloat(d.obesity);
+        d.obesityLow = parseFloat(d.obesityLow);
+        d.obesityHigh = parseFloat(d.obesityHigh);
+        d.smokes = parseFloat(d.smokes);
+        d.smokesLow = parseFloat(d.smokesLow);
+        d.smokesHigh = parseFloat(d.smokesHigh);                               
+    });
+
+    // .......... Variables .......... //
+    // Arrays with x- and y-axis titles and tool tip info
+    let xArr = [
+        {"xAxisVar": "",
+        "xAxisVal": "poverty",
+        "xAxisTitle": "In Poverty (%)",
+        "xAxisToolTip": "Poverty:"},
+        {"xAxisVar": "",
+        "xAxisVal": "age",
+        "xAxisTitle": "Age (Median)",
+        "xAxisToolTip": "Age:"},             
+        {"xAxisVar": "",
+        "xAxisVal": "income",
+        "xAxisTitle": "Household Income (Median)",
+        "xAxisToolTip": "MHI:"}
+    ];
+
+    let yArr = [
+        {"yAxisVar": "",
+        "yAxisVal": "healthcare",
+        "yAxisTitle": "Lacks Healthcare (%)",
+        "yAxisToolTip": "No Healthcare:"},
+        {"yAxisVar": "",
+        "yAxisVal": "smokes",
+        "yAxisTitle": "Smokes (%)",
+        "yAxisToolTip": "Smokers:"},             
+        {"yAxisVar": "",
+        "yAxisVal": "obesity",
+        "yAxisTitle": "Obese (%)",
+        "yAxisToolTip": "Obesity:"}
+    ];
+
+    // Initial Params
+    let xSelVal = xArr[0].xAxisVal;
+    let ySelVal = yArr[0].yAxisVal;
+
+    // .......... Chart Dimensions .......... //
+    // Set up width and height of 'svg' element
+    let svgWidth = 1000;
+    let svgHeight = 600;
+
+    // Set up margin of the chart 
+    let margin = {
+        top: 20,
+        right: 40,
+        bottom: 80,
+        left: 100
+    };
+
+    // Determine width and height of chart
+    let chartWidth = svgWidth - margin.left - margin.right;
+    let chartHeight = svgHeight - margin.top - margin.bottom;
+
+    // .......... Chart Elements .......... //
+    // Create an SVG Wrapper, append an SVG group that will hold the chart, and shift the latter by left and top margins
+    let svg = d3.select("#scatter")
+        .append('svg')
+        .attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .attr("class", "mb-4");
+
+    let chartGroup = svg.append('g')
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // ELEMENTS - "circle"
+    let circlesGroup = chartGroup.selectAll("circle")
+        .data(acsData)
+        .enter()
+        .append('circle')
+        .attr("class", "stateCircle");
+
+    // ELEMENTS - "text" for circles
+    let circleTextsGroup = chartGroup.selectAll(".stateText")
+        .data(acsData)
+        .enter()
+        .append("text")
+        .attr("class", "stateText");
+
+    // ELEMENT - "g" for axes
+    let xAxis = chartGroup.selectAll("#x-axis")
+        .data(["x-axis"])
+        .enter()
+        .append("g")
+        .attr("class", "chart-axis")
+        .attr("id", "x-axis")
+        .attr("transform", `translate(0, ${chartHeight})`);
+
+    let yAxis = chartGroup.selectAll("#y-axis")
+        .data(["y-axis"])
+        .enter()
+        .append("g")
+        .attr("class", "chart-axis")
+        .attr("id", "y-axis");
+
+    // ELEMENTS - "g" for x- and y-axis title groups
+    let xTitleWrapper = chartGroup.append('g')
+        .attr("id", "x-title")
+        .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + 20})`);
+    let yTitleWrapper = chartGroup.append('g')
+        .attr("id", "y-title")
+        .attr("transform", `translate(-20, ${chartHeight / 2}) rotate(-90)`); 
+    
+    // ELEMENTS - "text" for x- and y-axis titles
+    // Note that "xArr" and "yArr" have the same length
+    for (let i = 0; i < xArr.length; i++) {
+
+        // "text" for x-titles
+        xTitleWrapper.append("text")
+            .attr("id", xArr[i].xAxisVal)
+            .attr("value", xArr[i].xAxisVal)
+            .attr("x", 0)
+            .attr("y", 20 * (i + 1))
+            .text(xArr[i].xAxisTitle);
+        // "text" for y-titles
+        yTitleWrapper.append("text")
+            .attr("id", yArr[i].yAxisVal)
+            .attr("value", yArr[i].yAxisVal)
+            .attr("x", 0)
+            .attr("y", -20 * (i + 1))
+            .text(yArr[i].yAxisTitle);
+
+    }
+
+    // .......... Initial plotting of the chart .......... //
+    plotChart();
+    
+    // .......... Event listener for switching of x-axis .......... // 
+    d3.select("#x-title").selectAll("text").on("click", function() {
+      
+        if (d3.select(this).attr("value") !== xSelVal) {
+            // Update "xSelVal" if different from the current one
+            xSelVal = d3.select(this).attr("value");
+            // Re-plot the chart
+            plotChart();
+        }   
+   
+    }); 
+
+    // .......... Event listener for switching of y-axis .......... //
+    d3.select("#y-title").selectAll("text").on("click", function() {
+      
+        if (d3.select(this).attr("value") !== ySelVal) {
+            // Update "ySelVal" if different from the current one            
+            ySelVal = d3.select(this).attr("value");
+            // Re-plot the chart
+            plotChart();
+        }   
+   
+    }); 
+
+    // |||||||||||||||||||| FUNCTIONS |||||||||||||||||||| //
+    /**
+     * Based on data from .csv file to plot/update chart with selected x- and y- info as active axes
+     */
+    function plotChart() {
+
+        // Determine scales of x- and y-axis in the chart
+        let xLinearScale = xScale(acsData, xSelVal);
+        let yLinearScale = yScale(acsData, ySelVal);
+
+        // Create axis functions
+        let bottomAxis = d3.axisBottom(xLinearScale);
+        let leftAxis = d3.axisLeft(yLinearScale);
+
+        // Update x- and y-axis
+        xAxis.transition()
+            .call(bottomAxis);
+        yAxis.transition()
+            .call(leftAxis);                    
+
+        // Update x-axis titles
+        xTitleWrapper.selectAll("text")
+            .transition()
+            .attr("class", "inactive");         
+        xTitleWrapper.select(`#${xSelVal}`)
+            .transition()
+            .attr("class", "active");
+
+        // Update y-axis titles            
+        yTitleWrapper.selectAll("text")
+            .transition()
+            .attr("class", "inactive");            
+        yTitleWrapper.select(`#${ySelVal}`)
+            .transition()
+            .attr("class", "active"); 
+
+        // Update circles
+        circlesGroup.transition()
+            .duration(500)
+            .attr("cx", (d) => xLinearScale(d[xSelVal]))
+            .attr("cy", (d) => yLinearScale(d[ySelVal]))
+            .attr("r", 14);
+
+        // Update circle texts
+        circleTextsGroup.transition()
+            .duration(500)
+            .attr("x", (d) => xLinearScale(d[xSelVal]))
+            .attr("y", (d) => yLinearScale(d[ySelVal]))   
+            .attr("dy", 5)
+            .text((d) => d.abbr);
+
+        // .......... Event listener for tool tips .......... //
+        // Determine x- and y-label to be displayed in tool tips
+        xArr.forEach((param) => {            
+            if (param.xAxisVal === xSelVal) xToolTipLabel = param.xAxisToolTip;
+        });
+        yArr.forEach((param) => {
+            if (param.yAxisVal === ySelVal) yToolTipLabel = param.yAxisToolTip;
+        });              
+
+        // Setup tool tip
+        let toolTip = d3.tip()
+            .attr("class", "d3-tip")
+            .offset([-20, -60])
+            .html((d) => {
+                return `${d.state}<br>${xToolTipLabel} ${d[xSelVal]}%<br>${yToolTipLabel} ${d[ySelVal]}%`;
+            });
+       
+        // APPEND TOOL TIP
+        circlesGroup.call(toolTip);
+
+        // Event listeners for tool tips
+        circlesGroup
+
+            .on("mouseover", function(d) {
+                // Show tool tip
+                toolTip.show(d, this);
+                // Setup selected circle
+                d3.select(this)
+                    .style("fill", "black")  //ffb3b3
+                    .style("stroke", "#89bdd3")
+                    .attr("stroke-width", 2.5)
+                    .attr("r", 20);
+            })
+
+            .on("mouseout", function(d) {
+                // Hide tool tip
+                toolTip.hide(d, this);
+                // Setup selected circle
+                d3.select(this)
+                    .style("fill", "#89bdd3")
+                    .style("stroke", "#e3e3e3")
+                    .attr("stroke-width", 1)
+                    .attr("r", 14);
+            });
+    
+        // End of "plotChart()"" function
+        }
+
+    /**
+     * Determine x-axis scale based on the values of selected category (column in data from .csv file)
+     * @param {*} acsData Entire data read from .csv file
+     * @param {*} xSelVal Selected X axis of the chart
+     */
+    function xScale(acsData, xSelVal) {
+        
+        // Determine lower and upper limits of domain
+        let domainLoLim = d3.min(acsData, (d) => d[xSelVal]) * 0.8;
+        let domainUpLim = d3.max(acsData, (d) => d[xSelVal]) * 1.2; 
+    
+        // Create scales
+        let xLinearScale = d3.scaleLinear()
+                                .domain([domainLoLim, domainUpLim])
+                                .range([0, chartWidth]);
+        
+        return xLinearScale;
+
+    }
+
+    /**
+     * Determine y-axis scale based on the values of selected category (column in data from .csv file)
+     * @param {*} acsData Entire data read from .csv file
+     * @param {*} ySelVal Selected Y axis of the chart
+     */
+    function yScale(acsData, ySelVal) {
+
+        // Determine lower and upper limits of domain
+        let domainLoLim = d3.min(acsData, d => d[ySelVal]) * 0.8;
+        let domainUpLim = d3.max(acsData, d => d[ySelVal]) * 1.2; 
+        
+        // Create scales
+        let yLinearScale = d3.scaleLinear()
+                                .domain([domainLoLim, domainUpLim])
+                                .range([chartHeight, 0]);
+    
+        return yLinearScale;
+
+    }
+
+// end of "d3.csv"
+});
