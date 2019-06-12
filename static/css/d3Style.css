@@ -61,6 +61,11 @@
   border-radius: 4px;
 }
 
+#temp-circle {
+  position: absolute;
+  z-index:-1
+}
+
 /* Mobile Rules */
 @media screen and (max-width: 530px) {
   .stateText {

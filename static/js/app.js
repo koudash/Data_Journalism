@@ -85,7 +85,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     // ELEMENTS - "circle"
-    let circlesGroup = chartGroup.selectAll("circle")
+    let circlesGroup = chartGroup.selectAll('circle')
         .data(acsData)
         .enter()
         .append('circle')
@@ -102,7 +102,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     let xAxis = chartGroup.selectAll("#x-axis")
         .data(["x-axis"])
         .enter()
-        .append("g")
+        .append('g')
         .attr("class", "chart-axis")
         .attr("id", "x-axis")
         .attr("transform", `translate(0, ${chartHeight})`);
@@ -110,7 +110,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     let yAxis = chartGroup.selectAll("#y-axis")
         .data(["y-axis"])
         .enter()
-        .append("g")
+        .append('g')
         .attr("class", "chart-axis")
         .attr("id", "y-axis");
 
@@ -127,14 +127,14 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     for (let i = 0; i < xArr.length; i++) {
 
         // "text" for x-titles
-        xTitleWrapper.append("text")
+        xTitleWrapper.append('text')
             .attr("id", xArr[i].xAxisVal)
             .attr("value", xArr[i].xAxisVal)
             .attr("x", 0)
             .attr("y", 20 * (i + 1))
             .text(xArr[i].xAxisTitle);
         // "text" for y-titles
-        yTitleWrapper.append("text")
+        yTitleWrapper.append('text')
             .attr("id", yArr[i].yAxisVal)
             .attr("value", yArr[i].yAxisVal)
             .attr("x", 0)
@@ -146,21 +146,65 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     // .......... Initial plotting of the chart .......... //
     plotChart();
     
-    // .......... Event listener for switching of x-axis .......... // 
-    d3.select("#x-title").selectAll("text").on("click", function() {
+    // .......... Event listener to switch x-axis .......... // 
+    d3.select("#x-title").selectAll('text').on("click", function() {
       
+        // Variables to store x- and y-coord relative to 'svg' element
+        let mouseX = event.pageX - $('svg').offset().left;
+        let mouseY = event.pageY - $('svg').offset().top;
+        
+        // APPEND CIRCLE TO 'SVG'
+        d3.select('svg')
+            .append('circle')
+            .attr("id", "temp-circle")
+            .attr("cx", mouseX)
+            .attr("cy", mouseY)
+            .attr("r", 25)
+            .attr("fill", "none")
+            .style("stroke", "black")
+            .attr("stroke-width", 3);
+      
+        // REMOVE CIRCLE
+        d3.select("#temp-circle")
+            .transition()
+            .duration(100)
+            .remove(); 
+
+        // Update "xSelVal" and re-plot the chart
         if (d3.select(this).attr("value") !== xSelVal) {
             // Update "xSelVal" if different from the current one
             xSelVal = d3.select(this).attr("value");
             // Re-plot the chart
             plotChart();
-        }   
-   
+        }
+
     }); 
 
-    // .......... Event listener for switching of y-axis .......... //
-    d3.select("#y-title").selectAll("text").on("click", function() {
+    // .......... Event listener to switch y-axis .......... //
+    d3.select("#y-title").selectAll('text').on("click", function() {
+
+        // Variables to store x- and y-coord relative to 'svg' element
+        let mouseX = event.pageX - $('svg').offset().left;
+        let mouseY = event.pageY - $('svg').offset().top;
+        
+        // APPEND CIRCLE TO 'SVG'
+        d3.select('svg')
+            .append('circle')
+            .attr("id", "temp-circle")
+            .attr("cx", mouseX)
+            .attr("cy", mouseY)
+            .attr("r", 25)
+            .attr("fill", "none")
+            .style("stroke", "black")
+            .attr("stroke-width", 3);
       
+        // REMOVE CIRCLE
+        d3.select("#temp-circle")
+            .transition()
+            .duration(100)
+            .remove(); 
+            
+        // Update "ySelVal" and re-plot the chart    
         if (d3.select(this).attr("value") !== ySelVal) {
             // Update "ySelVal" if different from the current one            
             ySelVal = d3.select(this).attr("value");
@@ -191,7 +235,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .call(leftAxis);                    
 
         // Update x-axis titles
-        xTitleWrapper.selectAll("text")
+        xTitleWrapper.selectAll('text')
             .transition()
             .attr("class", "inactive");         
         xTitleWrapper.select(`#${xSelVal}`)
@@ -199,7 +243,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .attr("class", "active");
 
         // Update y-axis titles            
-        yTitleWrapper.selectAll("text")
+        yTitleWrapper.selectAll('text')
             .transition()
             .attr("class", "inactive");            
         yTitleWrapper.select(`#${ySelVal}`)
@@ -249,7 +293,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
                 toolTip.show(d, this);
                 // Setup selected circle
                 d3.select(this)
-                    .style("fill", "black")  //ffb3b3
+                    .style("fill", "black")  
                     .style("stroke", "#89bdd3")
                     .attr("stroke-width", 2.5)
                     .attr("r", 20);
@@ -311,3 +355,4 @@ d3.csv('../static/db/data.csv').then((acsData) => {
 
 // end of "d3.csv"
 });
+ 
