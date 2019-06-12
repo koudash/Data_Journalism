@@ -25,47 +25,55 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     let xArr = [
         {"xAxisVal": "poverty",
         "xAxisTitle": "In Poverty (%)",
-        "xAxisToolTip": "Poverty:"},
+        "xAxisToolTip": "Poverty:",
+        "xColor": "66ff66"},
         {"xAxisVal": "age",
         "xAxisTitle": "Age (Median)",
-        "xAxisToolTip": "Age:"},             
+        "xAxisToolTip": "Age:",
+        "xColor": "80dfff"},             
         {"xAxisVal": "income",
         "xAxisTitle": "Household Income (Median)",
-        "xAxisToolTip": "MHI:"}
+        "xAxisToolTip": "MHI:",
+        "xColor": "669999"}
     ];
 
     let yArr = [
         {"yAxisVal": "healthcare",
         "yAxisTitle": "Lacks Healthcare (%)",
-        "yAxisToolTip": "No Healthcare:"},
+        "yAxisToolTip": "No Healthcare:",
+        "yColor": "ff3385"},
         {"yAxisVal": "smokes",
         "yAxisTitle": "Smokes (%)",
-        "yAxisToolTip": "Smokers:"},             
+        "yAxisToolTip": "Smokers:",
+        "yColor": "ff9933"},             
         {"yAxisVal": "obesity",
         "yAxisTitle": "Obese (%)",
-        "yAxisToolTip": "Obesity:"}
+        "yAxisToolTip": "Obesity:",
+        "yColor": "ff1a1a"}
     ];
 
     // Initial Params
-    let xSelVal = xArr[0].xAxisVal;
-    let ySelVal = yArr[2].yAxisVal;
+    let xSelVal = xArr[0].xAxisVal,
+        ySelVal = yArr[2].yAxisVal;
+    let xColor = "",
+        yColor = "";
 
     // .......... Chart Dimensions .......... //
     // Set up width and height of 'svg' element
-    let svgWidth = 1000;
-    let svgHeight = 800;
+    let svgWidth = 1000,
+        svgHeight = 800;
 
     // Set up margin of the chart 
     let margin = {
         top: 20,
         right: 40,
-        bottom: 80,
-        left: 100
+        bottom: 100,
+        left: 120
     };
 
     // Determine width and height of chart
-    let chartWidth = svgWidth - margin.left - margin.right;
-    let chartHeight = svgHeight - margin.top - margin.bottom;
+    let chartWidth = svgWidth - margin.left - margin.right,
+        chartHeight = svgHeight - margin.top - margin.bottom;
 
     // .......... Chart Elements .......... //
     // Create an SVG Wrapper, append an SVG group that will hold the chart, and shift the latter by left and top margins
@@ -125,14 +133,14 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .attr("id", xArr[i].xAxisVal)
             .attr("value", xArr[i].xAxisVal)
             .attr("x", 0)
-            .attr("y", 20 * (i + 1))
+            .attr("y", 25 * (i + 1))
             .text(xArr[i].xAxisTitle);
         // "text" for y-titles
         yTitleWrapper.append('text')
             .attr("id", yArr[i].yAxisVal)
             .attr("value", yArr[i].yAxisVal)
             .attr("x", 0)
-            .attr("y", -20 * (i + 1))
+            .attr("y", -25 * (i + 1))
             .text(yArr[i].yAxisTitle);
 
     }
@@ -142,27 +150,6 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     
     // .......... Event listener to switch x-axis .......... // 
     d3.select("#x-title").selectAll('text').on("click", function() {
-      
-        // Variables to store x- and y-coord relative to 'svg' element
-        let mouseX = event.pageX - $('svg').offset().left;
-        let mouseY = event.pageY - $('svg').offset().top;
-        
-        // APPEND CIRCLE TO 'SVG'
-        d3.select('svg')
-            .append('circle')
-            .attr("id", "temp-circle")
-            .attr("cx", mouseX)
-            .attr("cy", mouseY)
-            .attr("r", 25)
-            .attr("fill", "none")
-            .style("stroke", "black")
-            .attr("stroke-width", 3);
-      
-        // REMOVE CIRCLE
-        d3.select("#temp-circle")
-            .transition()
-            .duration(100)
-            .remove(); 
 
         // Update "xSelVal" and re-plot the chart
         if (d3.select(this).attr("value") !== xSelVal) {
@@ -172,14 +159,9 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             plotChart();
         }
 
-    }); 
-
-    // .......... Event listener to switch y-axis .......... //
-    d3.select("#y-title").selectAll('text').on("click", function() {
-
         // Variables to store x- and y-coord relative to 'svg' element
-        let mouseX = event.pageX - $('svg').offset().left;
-        let mouseY = event.pageY - $('svg').offset().top;
+        let mouseX = event.pageX - $('svg').offset().left,
+            mouseY = event.pageY - $('svg').offset().top;
         
         // APPEND CIRCLE TO 'SVG'
         d3.select('svg')
@@ -189,7 +171,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .attr("cy", mouseY)
             .attr("r", 25)
             .attr("fill", "none")
-            .style("stroke", "black")
+            .style("stroke", xColor)
             .attr("stroke-width", 3);
       
         // REMOVE CIRCLE
@@ -197,7 +179,12 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .transition()
             .duration(100)
             .remove(); 
-            
+
+    }); 
+
+    // .......... Event listener to switch y-axis .......... //
+    d3.select("#y-title").selectAll('text').on("click", function() {
+
         // Update "ySelVal" and re-plot the chart    
         if (d3.select(this).attr("value") !== ySelVal) {
             // Update "ySelVal" if different from the current one            
@@ -205,6 +192,27 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             // Re-plot the chart
             plotChart();
         }   
+
+        // Variables to store x- and y-coord relative to 'svg' element
+        let mouseX = event.pageX - $('svg').offset().left,
+            mouseY = event.pageY - $('svg').offset().top;
+        
+        // APPEND CIRCLE TO 'SVG'
+        d3.select('svg')
+            .append('circle')
+            .attr("id", "temp-circle")
+            .attr("cx", mouseX)
+            .attr("cy", mouseY)
+            .attr("r", 25)
+            .attr("fill", "none")
+            .style("stroke", yColor)
+            .attr("stroke-width", 3);
+      
+        // REMOVE CIRCLE
+        d3.select("#temp-circle")
+            .transition()
+            .duration(100)
+            .remove();             
    
     }); 
 
@@ -214,13 +222,22 @@ d3.csv('../static/db/data.csv').then((acsData) => {
      */
     function plotChart() {
 
+        // Determine color
+        xArr.forEach((param) => {            
+            if (param.xAxisVal === xSelVal) xColor = param.xColor;
+        });
+        yArr.forEach((param) => {
+            if (param.yAxisVal === ySelVal) yColor = param.yColor;
+        });              
+
+        
         // Determine scales of x- and y-axis in the chart
-        let xLinearScale = xScale(acsData, xSelVal);
-        let yLinearScale = yScale(acsData, ySelVal);
+        let xLinearScale = xScale(acsData, xSelVal),
+            yLinearScale = yScale(acsData, ySelVal);
 
         // Create axis functions
-        let bottomAxis = d3.axisBottom(xLinearScale);
-        let leftAxis = d3.axisLeft(yLinearScale);
+        let bottomAxis = d3.axisBottom(xLinearScale),
+            leftAxis = d3.axisLeft(yLinearScale);
 
         // Update x- and y-axis
         xAxis.transition()
@@ -231,25 +248,30 @@ d3.csv('../static/db/data.csv').then((acsData) => {
         // Update x-axis titles
         xTitleWrapper.selectAll('text')
             .transition()
-            .attr("class", "inactive");         
+            .style("fill", "#c9c9c9")
+            .attr("class", "inactive axis-text");         
         xTitleWrapper.select(`#${xSelVal}`)
             .transition()
-            .attr("class", "active");
+            .style("fill", xColor)
+            .attr("class", "active axis-text");
 
         // Update y-axis titles            
         yTitleWrapper.selectAll('text')
             .transition()
-            .attr("class", "inactive");            
+            .style("fill", "#c9c9c9")
+            .attr("class", "inactive axis-text");            
         yTitleWrapper.select(`#${ySelVal}`)
             .transition()
-            .attr("class", "active"); 
+            .style("fill", yColor)
+            .attr("class", "active axis-text"); 
 
         // Update circles
         circlesGroup.transition()
             .duration(500)
             .attr("cx", (d) => xLinearScale(d[xSelVal]))
             .attr("cy", (d) => yLinearScale(d[ySelVal]))
-            .attr("r", 14);
+            .attr("r", 14)
+            .style("fill", yColor);
 
         // Update circle texts
         circleTextsGroup.transition()
@@ -257,7 +279,8 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .attr("x", (d) => xLinearScale(d[xSelVal]))
             .attr("y", (d) => yLinearScale(d[ySelVal]))   
             .attr("dy", 5)
-            .text((d) => d.abbr);
+            .text((d) => d.abbr)
+            .style("fill", xColor);
 
         // .......... Event listener for tool tips .......... //
         // Determine x- and y-label to be displayed in tool tips
@@ -279,7 +302,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
         // APPEND TOOL TIP
         circlesGroup.call(toolTip);
 
-        // Event listeners for tool tips
+        // Event listeners for circle and tool tip
         circlesGroup
 
             .on("mouseover", function(d) {
@@ -288,7 +311,6 @@ d3.csv('../static/db/data.csv').then((acsData) => {
                 // Setup selected circle
                 d3.select(this)
                     .style("fill", "black")  
-                    .style("stroke", "#89bdd3")
                     .attr("stroke-width", 2.5)
                     .attr("r", 20);
             })
@@ -298,12 +320,11 @@ d3.csv('../static/db/data.csv').then((acsData) => {
                 toolTip.hide(d, this);
                 // Setup selected circle
                 d3.select(this)
-                    .style("fill", "#89bdd3")
-                    .style("stroke", "#e3e3e3")
+                    .style("fill", yColor)
                     .attr("stroke-width", 1)
-                    .attr("r", 14);
-            });
-    
+                    .attr("r", 14);                
+            });        
+
         // End of "plotChart()"" function
         }
 
@@ -315,8 +336,8 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     function xScale(acsData, xSelVal) {
         
         // Determine lower and upper limits of domain
-        let domainLoLim = d3.min(acsData, (d) => d[xSelVal]) * 0.9;
-        let domainUpLim = d3.max(acsData, (d) => d[xSelVal]) * 1.1; 
+        let domainLoLim = d3.min(acsData, (d) => d[xSelVal]) * 0.9,
+            domainUpLim = d3.max(acsData, (d) => d[xSelVal]) * 1.1; 
     
         // Create scales
         let xLinearScale = d3.scaleLinear()
@@ -335,8 +356,8 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     function yScale(acsData, ySelVal) {
 
         // Determine lower and upper limits of domain
-        let domainLoLim = d3.min(acsData, d => d[ySelVal]) * 0.9;
-        let domainUpLim = d3.max(acsData, d => d[ySelVal]) * 1.1; 
+        let domainLoLim = d3.min(acsData, d => d[ySelVal]) * 0.9,
+            domainUpLim = d3.max(acsData, d => d[ySelVal]) * 1.1; 
         
         // Create scales
         let yLinearScale = d3.scaleLinear()
