@@ -23,43 +23,37 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     // .......... Variables .......... //
     // Arrays with x- and y-axis titles and tool tip info
     let xArr = [
-        {"xAxisVar": "",
-        "xAxisVal": "poverty",
+        {"xAxisVal": "poverty",
         "xAxisTitle": "In Poverty (%)",
         "xAxisToolTip": "Poverty:"},
-        {"xAxisVar": "",
-        "xAxisVal": "age",
+        {"xAxisVal": "age",
         "xAxisTitle": "Age (Median)",
         "xAxisToolTip": "Age:"},             
-        {"xAxisVar": "",
-        "xAxisVal": "income",
+        {"xAxisVal": "income",
         "xAxisTitle": "Household Income (Median)",
         "xAxisToolTip": "MHI:"}
     ];
 
     let yArr = [
-        {"yAxisVar": "",
-        "yAxisVal": "healthcare",
+        {"yAxisVal": "healthcare",
         "yAxisTitle": "Lacks Healthcare (%)",
         "yAxisToolTip": "No Healthcare:"},
-        {"yAxisVar": "",
-        "yAxisVal": "smokes",
+        {"yAxisVal": "smokes",
         "yAxisTitle": "Smokes (%)",
         "yAxisToolTip": "Smokers:"},             
-        {"yAxisVar": "",
-        "yAxisVal": "obesity",
+        {"yAxisVal": "obesity",
         "yAxisTitle": "Obese (%)",
         "yAxisToolTip": "Obesity:"}
     ];
 
     // Initial Params
     let xSelVal = xArr[0].xAxisVal;
-    let ySelVal = yArr[0].yAxisVal;
+    let ySelVal = yArr[2].yAxisVal;
 
     // .......... Chart Dimensions .......... //
     // Set up width and height of 'svg' element
     let svgWidth = 1000;
-    let svgHeight = 600;
+    let svgHeight = 800;
 
     // Set up margin of the chart 
     let margin = {
@@ -321,8 +315,8 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     function xScale(acsData, xSelVal) {
         
         // Determine lower and upper limits of domain
-        let domainLoLim = d3.min(acsData, (d) => d[xSelVal]) * 0.8;
-        let domainUpLim = d3.max(acsData, (d) => d[xSelVal]) * 1.2; 
+        let domainLoLim = d3.min(acsData, (d) => d[xSelVal]) * 0.9;
+        let domainUpLim = d3.max(acsData, (d) => d[xSelVal]) * 1.1; 
     
         // Create scales
         let xLinearScale = d3.scaleLinear()
@@ -341,8 +335,8 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     function yScale(acsData, ySelVal) {
 
         // Determine lower and upper limits of domain
-        let domainLoLim = d3.min(acsData, d => d[ySelVal]) * 0.8;
-        let domainUpLim = d3.max(acsData, d => d[ySelVal]) * 1.2; 
+        let domainLoLim = d3.min(acsData, d => d[ySelVal]) * 0.9;
+        let domainUpLim = d3.max(acsData, d => d[ySelVal]) * 1.1; 
         
         // Create scales
         let yLinearScale = d3.scaleLinear()
