@@ -243,8 +243,16 @@ d3.csv('../static/db/data.csv').then((acsData) => {
         xAxis.transition()
             .call(bottomAxis);
         yAxis.transition()
-            .call(leftAxis);                    
-
+            .call(leftAxis);
+        
+        // Update color of axes ticks and texts
+        xAxis.select('path').style("stroke", xColor);
+        xAxis.selectAll("line").style("stroke", xColor);
+        xAxis.selectAll('text').style("fill", xColor);            
+        yAxis.select('path').style("stroke", yColor);
+        yAxis.selectAll("line").style("stroke", yColor);
+        yAxis.selectAll('text').style("fill", yColor);
+        
         // Update x-axis titles
         xTitleWrapper.selectAll('text')
             .transition()
