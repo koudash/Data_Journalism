@@ -60,8 +60,8 @@ d3.csv('../static/db/data.csv').then((acsData) => {
 
     // .......... Chart Dimensions .......... //
     // Set up width and height of 'svg' element
-    let svgWidth = 1000,
-        svgHeight = 800;
+    let svgWidth = 700,
+        svgHeight = 560;
 
     // Set up margin of the chart 
     let margin = {
@@ -133,14 +133,14 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .attr("id", xArr[i].xAxisVal)
             .attr("value", xArr[i].xAxisVal)
             .attr("x", 0)
-            .attr("y", 25 * (i + 1))
+            .attr("y", 20 * (i + 1))
             .text(xArr[i].xAxisTitle);
         // "text" for y-titles
         yTitleWrapper.append('text')
             .attr("id", yArr[i].yAxisVal)
             .attr("value", yArr[i].yAxisVal)
             .attr("x", 0)
-            .attr("y", -25 * (i + 1))
+            .attr("y", -20 * (i + 1))
             .text(yArr[i].yAxisTitle);
 
     }
@@ -252,7 +252,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
         yAxis.select('path').style("stroke", yColor);
         yAxis.selectAll("line").style("stroke", yColor);
         yAxis.selectAll('text').style("fill", yColor);
-        
+
         // Update x-axis titles
         xTitleWrapper.selectAll('text')
             .transition()
@@ -278,7 +278,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .duration(500)
             .attr("cx", (d) => xLinearScale(d[xSelVal]))
             .attr("cy", (d) => yLinearScale(d[ySelVal]))
-            .attr("r", 14)
+            .attr("r", 10)
             .style("fill", yColor);
 
         // Update circle texts
@@ -286,7 +286,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
             .duration(500)
             .attr("x", (d) => xLinearScale(d[xSelVal]))
             .attr("y", (d) => yLinearScale(d[ySelVal]))   
-            .attr("dy", 5)
+            .attr("dy", 3.5)
             .text((d) => d.abbr)
             .style("fill", xColor);
 
@@ -320,7 +320,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
                 d3.select(this)
                     .style("fill", "black")  
                     .attr("stroke-width", 2.5)
-                    .attr("r", 20);
+                    .attr("r", 14);
             })
 
             .on("mouseout", function(d) {
@@ -330,7 +330,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
                 d3.select(this)
                     .style("fill", yColor)
                     .attr("stroke-width", 1)
-                    .attr("r", 14);                
+                    .attr("r", 10);                
             });        
 
         // End of "plotChart()"" function
