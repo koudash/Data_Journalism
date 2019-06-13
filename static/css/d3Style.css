@@ -63,12 +63,16 @@
 }
 
 .article-poverty {
-  color: "66ff66";
+  color: chartreuse;
 }
 
+.article-income {
+  color: skyblue;
+}
 
-
-
+.article-age {
+  color: mediumblue;
+}
 
 /* Mobile Rules */
 @media screen and (max-width: 530px) {

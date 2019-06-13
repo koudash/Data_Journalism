@@ -26,30 +26,30 @@ d3.csv('../static/db/data.csv').then((acsData) => {
         {"xAxisVal": "poverty",
         "xAxisTitle": "In Poverty (%)",
         "xAxisToolTip": "Poverty:",
-        "xColor": "66ff66"},
-        {"xAxisVal": "age",
-        "xAxisTitle": "Age (Median)",
-        "xAxisToolTip": "Age:",
-        "xColor": "80dfff"},             
+        "xColor": "chartreuse"},
         {"xAxisVal": "income",
         "xAxisTitle": "Household Income (Median)",
         "xAxisToolTip": "MHI:",
-        "xColor": "669999"}
+        "xColor": "skyblue"},
+        {"xAxisVal": "age",
+        "xAxisTitle": "Age (Median)",
+        "xAxisToolTip": "Age:",
+        "xColor": "mediumblue"}         
     ];
 
     let yArr = [
         {"yAxisVal": "healthcare",
         "yAxisTitle": "Lacks Healthcare (%)",
         "yAxisToolTip": "No Healthcare:",
-        "yColor": "ff3385"},
+        "yColor": "hotpink"},
         {"yAxisVal": "smokes",
         "yAxisTitle": "Smokes (%)",
         "yAxisToolTip": "Smokers:",
-        "yColor": "ff9933"},             
+        "yColor": "orange"},             
         {"yAxisVal": "obesity",
         "yAxisTitle": "Obese (%)",
         "yAxisToolTip": "Obesity:",
-        "yColor": "ff1a1a"}
+        "yColor": "red"}
     ];
 
     // Initial Params
