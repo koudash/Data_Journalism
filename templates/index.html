@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>Data Journalism</title>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" 
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
     crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" 
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
     crossorigin="anonymous">
   <!-- Local style CSS -->
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/d3Style.css') }}">
     <!-- Favicon -->
   <!-- Downloaded from https://www.iconfinder.com/icons/2321425/advertisement_cartoon_headline_media_newspaper_press_reclame_icon -->
-  <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.png') }}">
-
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
-
 <body>
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-md-12">
         <h3>Demographics: A Factor Influenting Certain Health Issues?</h3>
-        <p>Health risks (as y-axis) facing particular demographics (as x-axis) have been illustrated in the following chart using the American Community Survey (ACS) data for the year of 2014 from the U.S. Census Bureau.
+        <p>Health risks (as y-axis) facing particular demographics (as x-axis) have been illustrated in the following chart 
+          using the American Community Survey (ACS) data for the year of 2014 from the U.S. Census Bureau.
           Explore by clicking on the axis titles! Hover on circles representing each individual U.S. state for detailed info.
         </p>
       </div>
@@ -43,29 +45,25 @@
         <div class="article">
           <h4 class="mb-4">Correlations Discovered Between Health Risks and Poverty, Age, Income Demographics</h4>
           <h6 class='article-poverty'>Impact of Poverty on Selected Health Risks</h6>
-          <p>Generally speaking, states with larger percentages of people struggling under minium poverty line are these with higher percentages of people without hearlthcare coverage, people who smokes, and people suffering obesity.</p>
-
+          <p>Generally speaking, states with larger percentages of people struggling under minium poverty line are these with 
+            higher percentages of people without hearlthcare coverage, people who smokes, and people suffering obesity.</p>
           <h6 class='article-income'>Impact of Income on Selected Health Risks</h6>
-          <p>Similarly to the trends with poverty, states with less median household income (MHI) have higher percentages of people without hearlthcare coverage, people who smokes, and people suffering obesity.
-            Apparently economy makes the call! 
-          </p>
-
+          <p>Similarly to the trends with poverty, states with less median household income (MHI) have higher percentages of people 
+            without hearlthcare coverage, people who smokes, and people suffering obesity.
+            Apparently economy makes the call!</p>
           <h6 class='article-age'>Impact of Age on Selected Health Risks</h6>
-          <p>Unlike the above, the correlations between age and health risks are not very obvious as circles(data) are tend to cluster together.</p>
-
+          <p>Unlike the above, the correlations between age and health risks are not very obvious as circles(data) are tend to 
+            cluster together.</p>
         </div>
       </div>
     </div>
   </div>
-
   <!-- Footer-->
   <div id="footer">
-    <p><strong>Rice Coding Bootcamp 2019 - Data Journalism HW by Lei Kang</strong></p>
+    <p><strong>D3.js by Lei Kang</strong></p>
   </div>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-
 </body>
-
 </html>

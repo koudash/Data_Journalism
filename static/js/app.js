@@ -228,8 +228,7 @@ d3.csv('../static/db/data.csv').then((acsData) => {
         });
         yArr.forEach((param) => {
             if (param.yAxisVal === ySelVal) yColor = param.yColor;
-        });              
-
+        });           
         
         // Determine scales of x- and y-axis in the chart
         let xLinearScale = xScale(acsData, xSelVal),
@@ -377,5 +376,4 @@ d3.csv('../static/db/data.csv').then((acsData) => {
     }
 
 // end of "d3.csv"
-});
- 
+}); 
